@@ -43,15 +43,6 @@ jobs:
     steps:
     - name: Assign QA to PR
       uses: kentaro-m/auto-assign-action@v1.2.5
-      with:
-        repo-token: ${{ secrets.PAT_TOKEN }}
-
-    - name: Login
-      uses: atlassian/gajira-login@v3
-      env:
-        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }} 
-        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }} 
-        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }} 
 
     - name: Check Variables
       run: |
