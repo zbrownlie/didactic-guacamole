@@ -1,0 +1,12 @@
+addReviewers: false
+
+# Enable to add reviewers as assignees.
+addAssignees: true
+
+reviewers: 
+  - zbrownlie
+
+skipKeywords:
+  - wip
+
+numberOfReviewers: 0
