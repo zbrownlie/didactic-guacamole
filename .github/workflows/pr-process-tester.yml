@@ -12,9 +12,6 @@ on:
 jobs:
   check-branch:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
     outputs: 
       branch: ${{ steps.extract_branch.outputs.branch }}
     steps:
@@ -41,6 +38,9 @@ jobs:
     if: contains(needs.check-branch.outputs.branch, 'REAL')
     name: Test the action
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     needs: check-branch
     steps:
     - name: Assign QA to PR
