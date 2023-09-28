@@ -12,6 +12,9 @@ on:
 jobs:
   check-branch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     outputs: 
       branch: ${{ steps.extract_branch.outputs.branch }}
     steps:
