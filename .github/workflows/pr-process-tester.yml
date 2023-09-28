@@ -34,6 +34,8 @@ jobs:
           echo 'github.event.head_commit.message = ${{ github.event.head_commit.message }}'
           echo 'steps.extract_branch.outputs.branch = ${{ steps.extract_branch.outputs.branch }}'
           echo 'github.event.action = ${{ github.event.action }}'
+          echo 'github.event.pusher.name = ${{ github.event.pusher.name }}'
+          echo 'github.event.repository.full_name = ${{  github.event.repository.full_name }}'
 
   tester:
     if: contains(needs.check-branch.outputs.branch, 'REAL') && github.event.action == 'opened'
