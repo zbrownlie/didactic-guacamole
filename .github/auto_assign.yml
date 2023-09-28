@@ -6,7 +6,7 @@ addAssignees: true
 reviewers: 
   - zander042
 
-skipKeywords:
-  - wip
-
 numberOfReviewers: 0
+
+# skipKeywords:
+#   - wip
