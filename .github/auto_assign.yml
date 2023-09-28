@@ -4,7 +4,7 @@ addReviewers: false
 addAssignees: true
 
 reviewers: 
-  - zbrownlie
+  - zander042
 
 skipKeywords:
   - wip
