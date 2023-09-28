@@ -4,6 +4,7 @@ on:
   pull_request:
     types:
       - opened
+      - synchronize 
     branches:
       - main
       # - 'feature/development'
@@ -35,7 +36,7 @@ jobs:
           echo 'github.event.action = ${{ github.event.action }}'
 
   tester:
-    if: contains(needs.check-branch.outputs.branch, 'REAL')
+    if: contains(needs.check-branch.outputs.branch, 'REAL') && github.event.action == 'opened'
     name: Test the action
     runs-on: ubuntu-latest
     permissions:
