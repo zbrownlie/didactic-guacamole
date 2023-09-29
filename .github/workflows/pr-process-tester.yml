@@ -51,6 +51,12 @@ jobs:
       - name: Assign QA to PR
         uses: kentaro-m/auto-assign-action@v1.2.5
 
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+           JIRA URL: https://designworksgaming.atlassian.net/browse/${{ steps.ticket.outputs.issue }} Demo URL: https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html
+
       - name: Check Variables
         run: |
           echo 'steps.ticket.outputs.issue = ${{ steps.ticket.outputs.issue }}'
