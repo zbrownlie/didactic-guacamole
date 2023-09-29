@@ -51,11 +51,33 @@ jobs:
       - name: Assign QA to PR
         uses: kentaro-m/auto-assign-action@v1.2.5
 
+      - name: Login to JIRA
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }} 
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }} 
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }} 
+  
+      - name: Find Issue Key
+        uses: atlassian/gajira-find-issue-key@v3
+        id: ticket
+        with:
+          string: ${{ needs.check-branch.outputs.branch }}
+  
+      - name: Comment on JIRA ticket
+        uses: atlassian/gajira-comment@v3
+        with:
+          issue: ${{ steps.ticket.outputs.issue }}
+          comment: 'Pull request opened on ${{ github.event.repository.name }}
+                    PR URL: ${{  github.event.pull_request.html_url }} 
+                    Demo URL: https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html'
+  
       - name: Comment on PR
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-           JIRA URL: https://designworksgaming.atlassian.net/browse/${{ steps.ticket.outputs.issue }} Demo URL: https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html
+           Pull request opened for https://designworksgaming.atlassian.net/browse/${{ steps.ticket.outputs.issue }}
+           Demo URL: https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html
 
       - name: Check Variables
         run: |
