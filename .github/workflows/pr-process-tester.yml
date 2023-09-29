@@ -37,6 +37,11 @@ jobs:
           echo 'github.event.pusher.name = ${{ github.event.pusher.name }}'
           echo 'github.event.repository.full_name = ${{  github.event.repository.full_name }}'
 
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
   tester:
     if: contains(needs.check-branch.outputs.branch, 'REAL') && github.event.action == 'opened'
     name: Test the action
