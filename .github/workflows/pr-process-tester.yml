@@ -22,6 +22,7 @@ jobs:
           echo 'github.run_id = ${{ github.run_id }}'
           echo 'github.run_number = ${{ github.run_number }}'
           echo 'github.run_attempt = ${{ github.run_attempt }}'
+          
 
       - name: Extract branch name
         shell: bash
@@ -36,11 +37,7 @@ jobs:
           echo 'github.event.action = ${{ github.event.action }}'
           echo 'github.event.pusher.name = ${{ github.event.pusher.name }}'
           echo 'github.event.repository.full_name = ${{  github.event.repository.full_name }}'
-
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+          echo 'github.event.pull_request.html_url = ${{  github.event.pull_request.html_url }}'
 
   tester:
     if: contains(needs.check-branch.outputs.branch, 'REAL') && github.event.action == 'opened'
@@ -51,10 +48,10 @@ jobs:
       pull-requests: write
     needs: check-branch
     steps:
-    - name: Assign QA to PR
-      uses: kentaro-m/auto-assign-action@v1.2.5
+      - name: Assign QA to PR
+        uses: kentaro-m/auto-assign-action@v1.2.5
 
-    - name: Check Variables
-      run: |
-        echo 'steps.ticket.outputs.issue = ${{ steps.ticket.outputs.issue }}'
-        echo 'needs.extract_branch.outputs.branch = ${{ needs.check-branch.outputs.branch }}'
+      - name: Check Variables
+        run: |
+          echo 'steps.ticket.outputs.issue = ${{ steps.ticket.outputs.issue }}'
+          echo 'needs.extract_branch.outputs.branch = ${{ needs.check-branch.outputs.branch }}'
