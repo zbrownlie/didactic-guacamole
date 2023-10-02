@@ -38,6 +38,7 @@ jobs:
           echo 'github.event.pusher.name = ${{ github.event.pusher.name }}'
           echo 'github.event.repository.full_name = ${{  github.event.repository.full_name }}'
           echo 'github.event.pull_request.html_url = ${{  github.event.pull_request.html_url }}'
+          echo 'github.event.pull_request.head.html_url = ${{  github.event.pull_request.head.html_url }}'
 
   tester:
     if: contains(needs.check-branch.outputs.branch, 'REAL') && github.event.action == 'opened'
@@ -68,16 +69,16 @@ jobs:
         uses: atlassian/gajira-comment@v3
         with:
           issue: ${{ steps.ticket.outputs.issue }}
-          comment: 'Pull request opened on ${{ github.event.repository.name }}
-                    PR URL: ${{  github.event.pull_request.html_url }} 
-                    Demo URL: https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html'
+          comment: '[${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }}) pull request opened in [${{ github.event.repository.name }}.](${{ github.event.repository.url }})  
+                    [Demo URL](https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html)'
   
       - name: Comment on PR
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-           Pull request opened for https://designworksgaming.atlassian.net/browse/${{ steps.ticket.outputs.issue }}
-           Demo URL: https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html
+            [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }}) pull request opened for [${{ steps.ticket.outputs.issue }}.](https://designworksgaming.atlassian.net/browse/${{ steps.ticket.outputs.issue }}) 
+            <br>
+            [Demo URL](https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html)
 
       - name: Check Variables
         run: |
