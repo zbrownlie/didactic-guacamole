@@ -51,9 +51,9 @@ jobs:
         with:
           fetch-depth: 2
       - name: Verify changes
-        run: echo "changes=${git diff --name-only -r HEAD^1 HEAD}" >> $GITHUB_OUTPUT
+        run: git diff --name-only -r HEAD^1 HEAD
         id: extract_changes          
-        
+
   tester:
     if: contains(('["REAL", "RR"]'), needs.check-branch.outputs.branch) && github.event.action == 'opened'
     name: Test the action
