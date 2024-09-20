@@ -40,8 +40,22 @@ jobs:
           echo 'github.event.pull_request.html_url = ${{  github.event.pull_request.html_url }}'
           echo 'github.event.pull_request.head.html_url = ${{  github.event.pull_request.head.html_url }}'
 
+  verify-changes:
+    name: Verify files updated in pull request
+    runs-on: ubuntu-latest
+    outputs: 
+      changes: ${{ steps.extract_changes.outputs.changes }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Verify changes
+        run: echo "changes=${git diff --name-only -r HEAD^1 HEAD}" >> $GITHUB_OUTPUT
+        id: extract_changes          
+        
   tester:
-    if: contains(needs.check-branch.outputs.branch, 'REAL') && github.event.action == 'opened'
+    if: contains(('["REAL", "RR"]'), needs.check-branch.outputs.branch) && github.event.action == 'opened'
     name: Test the action
     runs-on: ubuntu-latest
     permissions:
@@ -65,12 +79,17 @@ jobs:
         with:
           string: ${{ needs.check-branch.outputs.branch }}
   
-      - name: Comment on JIRA ticket
+      - name: Comment PR on JIRA ticket
         uses: atlassian/gajira-comment@v3
         with:
           issue: ${{ steps.ticket.outputs.issue }}
-          comment: '[${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }}) pull request opened in [${{ github.event.repository.name }}.](${{ github.event.repository.url }})  
-                    [Demo URL](https://dwg-dev.rmg.designworksgames.com/${{ needs.check-branch.outputs.branch }}/portal/index.html)'
+          comment: 'Pull Request: ${{ github.event.pull_request.html_url }}'
+  
+      - name: Comment file changes on JIRA ticket
+        uses: atlassian/gajira-comment@v3
+        with:
+          issue: ${{ steps.ticket.outputs.issue }}
+          comment: 'File Changes: ${{ needs.verify-changes.outputs.changes }}'
   
       - name: Comment on PR
         uses: thollander/actions-comment-pull-request@v2
