@@ -61,7 +61,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    needs: check-branch
+    needs: [check-branch, verify-changes]
     steps:
       - name: Assign QA to PR
         uses: kentaro-m/auto-assign-action@v1.2.5
