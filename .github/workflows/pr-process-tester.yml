@@ -55,7 +55,7 @@ jobs:
         id: extract_changes          
         
   tester:
-    if: contains(('["REAL", "RR"]'), needs.check-branch.outputs.branch) && github.event.action == 'opened'
+    if: contains(fromJson('["REAL", "RR"]'), needs.check-branch.outputs.branch) && github.event.action == 'opened'
     name: Test the action
     runs-on: ubuntu-latest
     permissions:
