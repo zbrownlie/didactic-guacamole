@@ -55,7 +55,7 @@ jobs:
         id: extract_changes          
         
   tester:
-    if: contains(('["REAL"]'), needs.check-branch.outputs.branch) || contains(('["RR"]'), needs.check-branch.outputs.branch) && github.event.action == 'opened'
+    if: contains(needs.check-branch.outputs.branch, 'REAL') || contains(needs.check-branch.outputs.branch, 'RR') && github.event.action == 'opened'
     name: Test the action
     runs-on: ubuntu-latest
     permissions:
