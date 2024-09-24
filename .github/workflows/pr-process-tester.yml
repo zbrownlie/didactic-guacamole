@@ -51,7 +51,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Verify changes
-        run: git diff --name-only -r HEAD^1 HEAD
+        run: echo "changes=$(git diff --name-only -r HEAD^1 HEAD)" >> $GITHUB_OUTPUT
         id: extract_changes          
         
   tester:
