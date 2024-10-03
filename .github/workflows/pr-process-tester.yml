@@ -40,17 +40,12 @@ jobs:
           echo 'github.event.pull_request.html_url = ${{  github.event.pull_request.html_url }}'
           echo 'github.event.pull_request.head.html_url = ${{  github.event.pull_request.head.html_url }}'
 
-  verify-changes:
-    name: Verify files updated in pull request
-    runs-on: ubuntu-latest
-    outputs: 
-      changes: ${{ steps.extract_changes.outputs.changes }}
-    steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-      - name: Verify changes
+
+      - name: Verify files updated in pull request
         id: extract_changes    
         run: |
           list_of_changes=$(git diff --name-only -r HEAD^1 HEAD | tr '/n' ' ')
@@ -59,7 +54,6 @@ jobs:
           echo "changes<<$EOF" >> $GITHUB_OUTPUT
           echo "$list_of_changes" >> $GITHUB_OUTPUT
           echo "$EOF" >> $GITHUB_OUTPUT
-      
         
   tester:
     if: contains(needs.check-branch.outputs.branch, 'REAL') || contains(needs.check-branch.outputs.branch, 'RR') && github.event.action == 'opened'
@@ -68,7 +62,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    needs: [check-branch, verify-changes]
+    needs: check-branch
     steps:
       - name: Assign QA to PR
         uses: kentaro-m/auto-assign-action@v1.2.5
