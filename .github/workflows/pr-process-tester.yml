@@ -54,10 +54,10 @@ jobs:
         id: extract_changes    
         run: 
           list_of_changes=$(git diff --name-only -r HEAD^1 HEAD | tr '/n' ' ')
-          EOF="EOF"
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "$list_of_changes"
           echo "changes<<$EOF" >> $GITHUB_OUTPUT
-          echo "$list_of_changes" >> $GITHUB_OUTPUT
+          echo "$(list_of_changes)" >> $GITHUB_OUTPUT
           echo "$EOF" >> $GITHUB_OUTPUT
       
         
