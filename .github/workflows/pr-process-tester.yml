@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       branch: ${{ steps.extract_branch.outputs.branch }}
+      changes: ${{ steps.extract_changes.outputs.changes }}
     steps:
       - name: Show run details
         run: |
@@ -23,7 +24,6 @@ jobs:
           echo 'github.run_number = ${{ github.run_number }}'
           echo 'github.run_attempt = ${{ github.run_attempt }}'
           
-
       - name: Extract branch name
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
