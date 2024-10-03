@@ -52,7 +52,7 @@ jobs:
           fetch-depth: 2
       - name: Verify changes
         id: extract_changes    
-        run: 
+        run: |
           list_of_changes=$(git diff --name-only -r HEAD^1 HEAD | tr '/n' ' ')
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "$list_of_changes"
