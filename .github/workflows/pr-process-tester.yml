@@ -53,8 +53,9 @@ jobs:
       - name: Verify changes
         id: extract_changes    
         run: 
+          list_of_changes=$(git diff --name-only -r HEAD^1 HEAD)
           echo "changes<<$EOF" >> $GITHUB_OUTPUT
-          echo git diff --name-only -r HEAD^1 HEAD >> $GITHUB_OUTPUT
+          echo "$list_of_changes" >> $GITHUB_OUTPUT
           echo "$EOF" >> $GITHUB_OUTPUT
       
         
