@@ -96,7 +96,9 @@ jobs:
         uses: atlassian/gajira-comment@v3
         with:
           issue: ${{ steps.ticket.outputs.issue }}
-          comment: 'File Changes: ${{ needs.verify-changes.outputs.changes }}'
+          comment: |
+            'File Changes:  
+             ${{ needs.verify-changes.outputs.changes }}'
   
       - name: Comment on PR
         uses: thollander/actions-comment-pull-request@v2
