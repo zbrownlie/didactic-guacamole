@@ -51,12 +51,14 @@ jobs:
         with:
           fetch-depth: 2
       - name: Verify changes
+        id: extract_changes    
         run: 
-          echo "changes<<$EOF" >> $GITHUB_OUTPUT
-          echo "$(git diff --name-only -r HEAD^1 HEAD)" >> $GITHUB_OUTPUT
-          echo "$EOF" >> $GITHUB_OUTPUT
-        id: extract_changes          
-        
+          list_of_changes=$(cat << EOF
+            git diff --name-only -r HEAD^1 HEAD
+            EOF
+          )
+          echo changes=$list_of_changes >> $GITHUB_OUTPUT
+              
   tester:
     if: contains(needs.check-branch.outputs.branch, 'REAL') || contains(needs.check-branch.outputs.branch, 'RR') && github.event.action == 'opened'
     name: Test the action
